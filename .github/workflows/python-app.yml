@@ -38,7 +38,7 @@ jobs:
   test_1:
     name: Pytest
     needs: [build]
-    runs-on: build
+    runs-on: ubuntu-latest
     steps:
     - name: Test with pytest
       run: |
