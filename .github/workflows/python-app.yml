@@ -24,10 +24,11 @@ jobs:
             ${{ runner.os }}-pip-
       - name: Install dependencies
         run: pip install -r requirements.txt
-      - name: Run tests
-        run: python -m unittest discover -s tests
+      #- name: Run tests
+      #  run: python -m unittest discover -s tests
 
   another-job:
+    needs: [build]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -40,8 +41,8 @@ jobs:
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-      - name: Run some other command
-        run: echo "Hello world"
+      - name: Run tests
+        run: pytest -rA --verbose
 
  
   
