@@ -40,8 +40,8 @@ jobs:
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-      - name: Run some other command
-        run: echo "Hello world"
+      - name: Run tests
+        run: pytest -rA --verbose
 
  
   
