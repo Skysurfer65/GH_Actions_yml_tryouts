@@ -1,11 +1,9 @@
-name: Build
+name: Build and test
 
 on:
   push:
     branches:
       - main
-permissions:
-  contents: write
 
 jobs:
   build:
@@ -16,22 +14,23 @@ jobs:
         os: [ubuntu-latest, windows-latest]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-
+        uses: actions/checkout@v2
+      - name: Set pip cache path
+        if: runner.os == 'Linux'
+        run: echo "::set-env name=PIP_CACHE_PATH::$HOME/.cache/pip"
+      - name: Set pip cache path
+        if: runner.os == 'Windows'
+        run: echo "::set-env name=PIP_CACHE_PATH::C:\Users\runneradmin\AppData\Local\pip\Cache"
       - name: Cache pip dependencies
         id: cache-pip-deps
-        uses: actions/cache@v3
+        uses: actions/cache@v2
         with:
-          path: ${{ runner.os }}-pip-cache
+          path: ${{ env.PIP_CACHE_PATH }}
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
   test1:
-    needs: [build]
     name: pytest
     runs-on: ${{ matrix.os }}
     strategy:
@@ -39,25 +38,15 @@ jobs:
         os: [ubuntu-latest, windows-latest]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-        
-
+        uses: actions/checkout@v2
       - name: Restore pip dependencies cache
-        uses: actions/cache@v3
+        uses: actions/cache@v2
         with:
-          path: ${{ runner.os }}-pip-cache
+          path: ${{ env.PIP_CACHE_PATH }}
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-            
-      - name: Print cache contents after restore
-        run: ls -l ~/.cache/pip
-    
-      - name: Install cached dependencies
+      - name: Install dependencies
         run: pip install -r requirements.txt
-        
-      - name: Run test
+      - name: Run tests
         run: pytest -rA --verbose
-
 
   
