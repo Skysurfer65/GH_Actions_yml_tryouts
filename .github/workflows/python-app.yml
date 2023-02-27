@@ -27,6 +27,7 @@ jobs:
         run: pip install -r requirements.txt
 
   test1:
+    needs: [build]
     name: pytest
     runs-on: ${{ matrix.os }}
     strategy:
