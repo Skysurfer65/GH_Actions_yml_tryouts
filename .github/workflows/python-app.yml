@@ -54,7 +54,9 @@ jobs:
             
       - name: Print cache contents after restore
         run: ls -l ~/.cache/pip
-
+    
+      - name: Install cached dependencies
+        run: pip install -r requirements.txt
 
 
   
