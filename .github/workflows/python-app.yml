@@ -1,28 +1,30 @@
-
 name: Build
 
 on:
   push:
     branches:
       - main
+
 jobs:
   build:
     name: Cache dependencies
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
+
       - name: Cache pip dependencies
         id: cache-pip-deps
-        uses: actions/cache@v3
+        uses: actions/cache@v2
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
+
       - name: Install dependencies
         run: pip install -r requirements.txt
 
@@ -32,17 +34,20 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
+
       - name: Restore pip dependencies cache
-        uses: actions/cache@v3
+        uses: actions/cache@v2
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Run tests
         run: pytest -rA --verbose
 
- 
   
