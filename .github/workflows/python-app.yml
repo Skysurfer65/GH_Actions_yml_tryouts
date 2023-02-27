@@ -55,7 +55,6 @@ jobs:
       - name: Print cache contents after restore
         run: ls -l ~/.cache/pip
 
-      - name: Run tests
 
 
   
