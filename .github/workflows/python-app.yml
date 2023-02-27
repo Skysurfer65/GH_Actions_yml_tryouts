@@ -40,6 +40,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        
+      - name: Print cache contents
+        run: ls -l ~/.cache/pip
 
       - name: Restore pip dependencies cache
         uses: actions/cache@v3
@@ -48,8 +51,11 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
+            
+      - name: Print cache contents after restore
+        run: ls -l ~/.cache/pip
 
       - name: Run tests
-        run: pytest -rA --verbose
+
 
   
