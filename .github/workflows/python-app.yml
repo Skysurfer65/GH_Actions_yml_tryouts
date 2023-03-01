@@ -25,7 +25,7 @@ jobs:
         id: get_path_windows
         if: runner.os == 'Windows'
         run: |
-          echo "PIP_CACHE_PATH=C:\Users\runneradmin\AppData\Local\pip\Cache" >> $GITHUB_ENV
+          echo "PIP_CACHE_PATH=C:\Users\admin\AppData\Local\pip\Cache" >> $GITHUB_ENV
           #echo "::set-env name=PIP_CACHE_PATH::C:\Users\runneradmin\AppData\Local\pip\Cache"
       - name: Cache pip dependencies
         id: cache-pip-deps
