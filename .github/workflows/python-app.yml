@@ -16,11 +16,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Set pip cache path
+        id: get_path_linux
         if: runner.os == 'Linux'
-        run: echo "::set-env name=PIP_CACHE_PATH::$HOME/.cache/pip"
+        run: |
+          echo "PIP_CACHE_PATH=$HOME/.cache/pip" >> $GITHUB_ENV
+          #echo "::set-env name=PIP_CACHE_PATH::$HOME/.cache/pip"
       - name: Set pip cache path
+        id: get_path_windows
         if: runner.os == 'Windows'
-        run: echo "::set-env name=PIP_CACHE_PATH::C:\Users\runneradmin\AppData\Local\pip\Cache"
+        run: |
+          echo "PIP_CACHE_PATH=C:\Users\runneradmin\AppData\Local\pip\Cache" >> $GITHUB_ENV
+          #echo "::set-env name=PIP_CACHE_PATH::C:\Users\runneradmin\AppData\Local\pip\Cache"
       - name: Cache pip dependencies
         id: cache-pip-deps
         uses: actions/cache@v2
